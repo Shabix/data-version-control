@@ -7,24 +7,24 @@ from skimage.io import imread_collection
 from skimage.transform import resize
 from sklearn.linear_model import SGDClassifier
 
-
+# accepts a dataframe and column that contains image filenames & returns images as a list of Numpy arrays
 def load_images(data_frame, column_name):
     filelist = data_frame[column_name].to_list()
     image_list = imread_collection(filelist)
     return image_list
 
-
+# accepts a dataframe and column that contains labels & returns a list of labels that correspond to the image
 def load_labels(data_frame, column_name):
     label_list = data_frame[column_name].to_list()
     return label_list
 
-
+# accepts a Numpy array that represents a single image,resizes it & reshapes it into a single row of data
 def preprocess(image):
     resized = resize(image, (100, 100, 3))
     reshaped = resized.reshape((1, 30000))
     return reshaped
 
-
+# loads the images and labels, preprocesses them, and stacks them into a single two-dimensional NumPy array
 def load_data(data_path):
     df = pd.read_csv(data_path)
     labels = load_labels(data_frame=df, column_name="label")
